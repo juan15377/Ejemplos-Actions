@@ -3,7 +3,7 @@ name: Reporte Excel por correo
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'   # todos los días a las 8am UTC
+    - cron: '*/50 * * * *'   # todos los días a las 8am UTC
 
 jobs:
   generar-y-enviar:
