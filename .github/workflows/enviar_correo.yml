@@ -3,8 +3,8 @@ name: Enviar Correo
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'   # todos los días a las 8am UTC
-
+    - cron: '0 9 * * *'   # 3:00 AM hora de México (CST, UTC-6)
+    
 jobs:
   generar-y-enviar:
     runs-on: ubuntu-latest
