@@ -1,33 +1,37 @@
-name: Ejecutar Hola Mundo
+name: Reporte Excel por correo
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * *'   # cada minuto
+    - cron: '0 8 * * *'   # todos los días a las 8am UTC
 
 jobs:
-  run-script:
-    runs-on: ubuntu-latest
+  generar-y-enviar:
+    runs-on: windows-latest
 
     steps:
-      - name: Descargar el código del repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Ejecutar script
-        run: python Scripts/holamundo.py
+      - name: Instalar dependencias
+        run: pip install openpyxl
 
-      - name: Mostrar contenido del archivo generado
-        run: cat resultado.txt
+      - name: Generar Excel
+        run: python Scripts/generar_excel.py
 
-      - name: Subir archivo como artifact
-        uses: actions/upload-artifact@v4
+      - name: Enviar por correo
+        uses: dawidd6/action-send-mail@v3
         with:
-          name: resultado
-          path: resultado.txt
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.PASSWORD }}
+          subject: Reporte automático diario
+          to: destinatario@ejemplo.com
+          from: Mi Workflow
+          body: Adjunto el archivo Excel generado automáticamente.
+          attachments: resultado.xlsx
