@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '* * * * *'   # cada minuto
+    - cron: '*/5 * * * *'   # cada minuto
 
 jobs:
   run-script:
