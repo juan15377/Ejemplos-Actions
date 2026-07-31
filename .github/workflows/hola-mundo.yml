@@ -20,3 +20,12 @@ jobs:
 
       - name: Ejecutar script
         run: python Scripts/holamundo.py
+
+      - name: Mostrar contenido del archivo generado
+        run: cat resultado.txt
+
+      - name: Subir archivo como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado
+          path: resultado.txt
