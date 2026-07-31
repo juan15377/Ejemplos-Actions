@@ -1,4 +1,4 @@
-name: Reporte Excel por correo
+name: Enviar Correo
 
 on:
   workflow_dispatch:
