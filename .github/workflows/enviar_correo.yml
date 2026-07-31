@@ -1,0 +1,37 @@
+name: Reporte Excel por correo
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/50 * * * *'   # todos los días a las 8am UTC
+
+jobs:
+  generar-y-enviar:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install openpyxl
+
+      - name: Generar Excel
+        run: python Scripts/generar_excel.py
+
+      - name: Enviar por correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.CORREO }}
+          password: ${{ secrets.PASSWORD }}
+          subject: Reporte automático diario
+          to: juan1092jesus543@gmail.com
+          from: Mi Workflow
+          body: Adjunto el archivo Excel generado automáticamente.
+          attachments: resultado.xlsx
