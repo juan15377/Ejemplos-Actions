@@ -2,9 +2,13 @@ name: Enviar Correo
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 9 * * *'   # 3:00 AM hora de México (CST, UTC-6)
-    
+    inputs:
+      data_url:
+        description: 'URL de donde se obtienen los datos (opcional)'
+        required: false
+        type: string
+        default: ''
+
 jobs:
   generar-y-enviar:
     runs-on: ubuntu-latest
@@ -18,9 +22,11 @@ jobs:
           python-version: '3.12'
 
       - name: Instalar dependencias
-        run: pip install openpyxl
+        run: pip install openpyxl requests
 
       - name: Generar Excel
+        env:
+          DATA_URL: ${{ github.event.inputs.data_url }}
         run: python Scripts/generar_excel.py
 
       - name: Enviar por correo
